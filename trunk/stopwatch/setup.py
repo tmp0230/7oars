@@ -15,7 +15,7 @@ setup(
     url = "http://code.google.com/p/7oars/",
     license = "BSD",
     platforms = ['POSIX', 'Windows'],
-    keywords = ['json pickle', 'json', 'pickle', 'marshal', 'serialization', 'JavaScript Object Notation'],
+    keywords = ['timer', 'watch', 'execution'],
     classifiers = [
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
