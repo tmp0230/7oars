@@ -6,26 +6,26 @@ except ImportError:
     from distutils.core import setup
     
 setup(
-    name = "stopwatch",
+    name = 'stopwatch',
     version = stopwatch.__version__,
-    description = "Python easily measuring execution time.",
+    description = 'stopwatch is a very simple python module for measuring time.',
     long_description = stopwatch.__doc__,
-    author = "John Paulett",
-    author_email = "john@7oars.com",
-    url = "http://code.google.com/p/7oars/",
-    license = "BSD",
+    author = stopwatch.__author__,
+    author_email = 'john -at- 7oars.com',
+    url = 'http://code.google.com/p/7oars/',
+    download_url = 'http://code.google.com/p/7oars/downloads/list',
+    license = 'BSD',
     platforms = ['POSIX', 'Windows'],
-    keywords = ['timer', 'watch', 'execution'],
+    keywords = ['timer', 'watch', 'execution', 'timeit'],
     classifiers = [
-        "License :: OSI Approved :: BSD License",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        "Development Status :: 4 - Beta",
-        "Intended Audience :: Developers"
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers'
     ],
-    options = { 'clean' : { 'all' : 1 } },
-    packages = ["stopwatch"],
-    #test_suite = 'stopwatch.tests.suite',
+    packages = ['stopwatch'],
+    test_suite = 'stopwatch.tests.suite',
     zip_safe=True,
 )
