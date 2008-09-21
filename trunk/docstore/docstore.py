@@ -63,7 +63,7 @@ urls = (
         )
 
 def is_valid_key(key):
-    """Checks to see if the parameter follws the allow pattern of
+    """Checks to see if the parameter follows the allow pattern of
     keys.
     """
     if VALID_KEY.match(key) is not None:
@@ -76,7 +76,7 @@ def validate_key(fn):
     directory traversal.
     """
     def new(*args):
-        if len(args) < 2 or not is_valid_key(args[1]):
+        if not is_valid_key(args[1]):
             web.badrequest()
         return fn(*args)
     return new
@@ -97,6 +97,7 @@ class AbstractDB(object):
     def POST(self, name):
         data = web.data()
         self.put_key(str(name), data)
+        print str(name)
         
     @validate_key
     def DELETE(self, name):
