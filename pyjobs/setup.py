@@ -1,4 +1,4 @@
-import processingjobs
+import jobs
 
 try:
     from setuptools import setup
@@ -16,7 +16,7 @@ setup(
     download_url = 'http://code.google.com/p/7oars/downloads/list',
     license = 'BSD',
     platforms = ['POSIX', 'Windows'],
-    keywords = ['pyprocessing', 'processing', 'threading', 'distributed'],
+    keywords = ['pyprocessing', 'processing', 'threading', 'distributed', 'multiprocessing'],
     classifiers = [
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
@@ -27,5 +27,6 @@ setup(
     ],
     packages = ['jobs'],
     test_suite = 'jobs.tests.suite',
+    install_requires=['processing'],
     zip_safe=True,
 )
