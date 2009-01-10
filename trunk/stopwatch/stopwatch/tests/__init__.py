@@ -9,7 +9,8 @@
 import unittest
 import doctest
 import stopwatch
- 
+from stopwatch import clockit
+
 class TimeControlledTimer(stopwatch.Timer):
     def __init__(self):
         self.__count = 0
@@ -45,10 +46,19 @@ class TimerTestCase(unittest.TestCase):
         
         point3 = self.timer.elapsed
         self.assertEqual(point2, point3)
+
+@clockit
+def timed_multiply(a, b):
+    return a * b
+    
+class DecoratorTestCase(unittest.TestCase):
+    def test_clockit(self):
+        self.assertEqual(6, timed_multiply(2, b=3))
         
 def suite():
     suite = unittest.TestSuite()  
     suite.addTest(unittest.makeSuite(TimerTestCase))
+    suite.addTest(unittest.makeSuite(DecoratorTestCase))
     #suite.addTest(doctest.DocTestSuite(stopwatch))
     return suite
 

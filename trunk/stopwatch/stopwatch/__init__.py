@@ -8,21 +8,32 @@
 
 import time
 
-"""stopwatch is a very simple python module for measuring time.
+"""stopwatch is a very simple Python module for measuring time.
 Great for finding out how long code takes to execute.
 
 >>> import stopwatch
 >>> t = stopwatch.Timer()
 >>> t.elapsed
-...
+3.8274309635162354
 >>> print t
-...
+15.9507198334 sec
 >>> t.stop()
+30.153270959854126
 >>> print t
->>> print t
+30.1532709599 sec
+
+Decorator exists for printing out execution times:
+>>> from stopwatch import clockit
+>>> @clockit
+    def mult(a, b):
+        return a * b
+>>> print mult(2, 6)
+mult in 1.38282775879e-05 sec
+6
+       
 """
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 __author__ = 'John Paulett <http://blog.7oars.com>'
 
 class Timer(object):
@@ -75,4 +86,16 @@ class Timer(object):
         """Nicely format the elapsed time
         """
         return str(self.elapsed) + ' sec'
-    
+
+def clockit(func):
+    """Function decorator that times the evaluation of *func* and prints the
+    execution time.
+    """
+    def new(*args, **kw):
+        t = Timer()
+        retval = func(*args, **kw)
+        t.stop()
+        print '%s in %s' % (func.__name__, t)
+        del t
+        return retval
+    return new
