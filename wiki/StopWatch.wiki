@@ -23,3 +23,15 @@ stopwatch is a very simple python timer.  I have found it very useful when I wan
 >>> t.elapsed # it will not go any more
 10.6
 }}}
+
+There is also a decorator for measuring how long a function takes to execute:
+{{{
+>>> from stopwatch import clockit
+>>> @clockit
+    def multiply(a, b):
+        return a * b
+>>> r = multiple(4, 5)
+multiple in 1.38282775879e-05 sec
+>>> print r
+20
+}}}
