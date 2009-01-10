@@ -6,8 +6,6 @@
 # This software is licensed as described in the file COPYING, which
 # you should have received as part of this distribution.
 
-import time
-
 """stopwatch is a very simple Python module for measuring time.
 Great for finding out how long code takes to execute.
 
@@ -32,6 +30,8 @@ mult in 1.38282775879e-05 sec
 6
        
 """
+
+import time
 
 __version__ = '0.3.1'
 __author__ = 'John Paulett <http://blog.7oars.com>'
