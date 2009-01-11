@@ -8,11 +8,15 @@
 # you should have received as part of this distribution.
 
 from __future__ import with_statement 
-import web
 import re
 import os
 import shelve
 import uuid
+
+import web
+if float(web.__version__) < 0.31:
+    raise ImportError, 'Must use web.py>=0.31'
+    
 #try:
 #    import hgshelve
 #except ImportError:
@@ -191,5 +195,6 @@ class ShelveDB(MemoryDB):
 #    database = hgshelve.open('hgrepo')
 
 if __name__ == "__main__": 
-    web.run(urls, globals())
+    app = web.application(urls, globals())
+    app.run()
 
