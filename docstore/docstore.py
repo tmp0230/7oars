@@ -7,21 +7,6 @@
 # This software is licensed as described in the file COPYING, which
 # you should have received as part of this distribution.
 
-from __future__ import with_statement 
-import re
-import os
-import shelve
-import uuid
-
-import web
-if float(web.__version__) < 0.31:
-    raise ImportError, 'Must use web.py>=0.31'
-    
-#try:
-#    import hgshelve
-#except ImportError:
-#    print 'Warning: hgshelve not installed'
-
 """A RESTful document store.  Each document is stored with a 
 key value.  We provide several implementations of the document
 store:
@@ -57,6 +42,22 @@ To delete a document, simple issue an HTTP DELETE command to the
 resource, e.g. to http://server/shelve/123456789.
 """
 
+from __future__ import with_statement 
+import re
+import os
+import shelve
+import uuid
+
+import web
+if float(web.__version__) < 0.31:
+    # works for traditional web.py versioning, could break if extra dot added
+    raise ImportError, 'Must use web.py>=0.31'
+    
+#try:
+#    import hgshelve
+#except ImportError:
+#    print 'Warning: hgshelve not installed'
+
 VALID_KEY = re.compile('[a-zA-Z0-9_-]{1,255}')
 
 urls = (
@@ -67,17 +68,14 @@ urls = (
         )
 
 def is_valid_key(key):
-    """Checks to see if the parameter follows the allow pattern of
-    keys.
-    """
+    """Checks to see if the parameter follows the allow pattern of keys."""
     if VALID_KEY.match(key) is not None:
         return True
     return False
     
 def validate_key(fn):
-    """Decorator for HTTP methods that validates if resource 
-    name is a valid database key. Used to protect against 
-    directory traversal.
+    """Decorator for HTTP methods that validates if resource name is a valid 
+    database key. Used to protect against directory traversal.
     """
     def new(*args):
         if not is_valid_key(args[1]):
@@ -86,45 +84,46 @@ def validate_key(fn):
     return new
 
 class AbstractDB(object):
-    """Abstract database that handles the high-level HTTP primitives.
-    """
+    """Abstract database that handles the high-level HTTP primitives."""
     def GET(self, name):
         if len(name) <= 0:
-            print '<html><body><b>Keys:</b><br />'
+            out = '<html><body><b>Keys:</b><br />'
             for key in self.keys():
-                print ''.join(['<a href="',str(key),'">',str(key),'</a><br />'])
-            print '</body></html>'
+                out += ''.join(['<a href="',str(key),'">',str(key),'</a><br />'])
+            out += '</body></html>'
+            return out
         else:
-            self.get_resource(name)
+            return self.get_resource(name)
            
     @validate_key
     def POST(self, name):
         data = web.data()
         self.put_key(str(name), data)
-        print str(name)
+        return str(name)
         
     @validate_key
     def DELETE(self, name):
         self.delete_key(str(name))
         
     def PUT(self, name=None):
-        """Creates a new document with the request's data and 
-        generates a unique key for that document.
+        """Creates a new document with the request's data and generates a
+        unique key for that document.
         """
         key = str(uuid.uuid4())
         self.POST(key)
-        print key
+        return key
 
     @validate_key
     def get_resource(self, name):
         result = self.get_key(str(name))
         if result is not None: 
-            print result
-        
+            return result
+
+ 
 class MemoryDB(AbstractDB):
-    """In memory storage engine.  Lacks persistence.
-    """
-    database = {}
+    """In memory storage engine.  Lacks persistence."""
+    database = {} 
+        
     def get_key(self, key):
         try:
             return self.database[key]
@@ -144,9 +143,7 @@ class MemoryDB(AbstractDB):
         return self.database.iterkeys()
     
 class FilesystemDB(AbstractDB):
-    """Storage engine that stores a file
-    for each document.
-    """
+    """Storage engine that stores a file for each document."""
     db_dir = 'db'
     def get_key(self, key):
         try:
@@ -175,8 +172,8 @@ class FilesystemDB(AbstractDB):
         return os.path.join(self.db_dir, key)
 
 class ShelveDB(MemoryDB):
-    """Storage engine based upon the Python shelve module.
-    All documents persisted.
+    """Storage engine based upon the Python shelve module. All documents 
+    persisted.
     """
     database = shelve.open('shelve.db', writeback=True)
     
